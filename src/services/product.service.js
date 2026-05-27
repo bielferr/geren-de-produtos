@@ -1,15 +1,18 @@
 const AppError = require('../utils/AppError')
-let products = []
+const prisma = require('../lib/prisma')
 
 
-
-function getProductsAll(){
- return products
+async function getProductsAll(){
+    const products = await prisma.product.findMany()
+return products
 }
 
-function getProductById(id){
-
-   const product =  products.find(p => p.id === Number(id))
+async function getProductById(id){
+    const product = await prisma.product.findUnique({
+        where: {
+            id: Number(id)
+        }
+    })
 
    if(!product){
     throw new AppError("Product not found", 404)
@@ -17,44 +20,63 @@ function getProductById(id){
     return product
 }
 
-function createProduct(data){
-    const newProduct = {
-        id: Date.now(),
-        ...data
-    }
-    products.push(newProduct)
+async function createProduct(data){
+    const newProduct = await prisma.product.create({
+        data: {
+            name: data.name,
+            price: data.price,
+            quantity: data.quantity
+        }
+    })
     return newProduct
 }
 
 
 
-function updateProduct(id, data){
-    const index = products.findIndex(p => p.id === Number(id))
+async function updateProduct(id, data){
+    const product = await prisma.product.findUnique({
+        where: {
+            id: Number(id)
+        }
+    })
 
-    if (index === -1){
+    if (!product) {
         throw new AppError("Product not found", 404)
     }
 
-    products[index] ={ 
-        ...products[index],
-        ...data
-    }
-    return products[index]
+    const updatedProduct = await prisma.product.update({
+        where: {
+            id: Number(id)
+        },
+        data: {
+            name: data.name,
+            price: data.price,
+            quantity: data.quantity
+        }
+    })
+
+    return updatedProduct
 }
 
-function deleteProduct(id) {
-    const before = products.length
-    products = products.filter(p => p.id !== Number(id))
+async function deleteProduct(id) {
+    const product = await prisma.product.findUnique({
+        where: {
+            id: Number(id)
+        }
+    })
 
-    if (before === products.length){
+    if (!product) {
         throw new AppError("Product not found", 404)
     }
+
+    await prisma.product.delete({
+        where: {
+            id: Number(id)
+        }
+    })
+
     return true
-
 }
-
-
-
 
 module.exports = {
     deleteProduct,
@@ -83,8 +105,16 @@ module.exports = {
 
 // Service:
 // cria objeto
-// salva no array
+// // salva no banco de dados
 // retorna produto
 
 // ROUTE → CONTROLLER → SERVICE → CONTROLLER → RESPONSE
-
+// Routes
+// ↓
+// Controllers
+// ↓
+// Services
+// ↓
+// Prisma
+// ↓
+// PostgreSQL

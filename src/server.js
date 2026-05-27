@@ -7,8 +7,7 @@ const productsRoutes = require('./routes/products.routes')
 app.use(express.json())
 
 app.use(logger)
-
-app.use(productsRoutes)
+app.use('/api',productsRoutes)
 
 
 const PORT = process.env.PORT || 5555
