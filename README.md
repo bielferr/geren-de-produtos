@@ -6,7 +6,7 @@
 
 Projeto desenvolvido para estudo prático de backend com Node.js e Express.
 
-O objetivo foi entender na prática como construir uma API REST do zero, aplicando arquitetura limpa, separação de responsabilidades e lógica de CRUD sem banco de dados.
+O objetivo foi entender na prática como construir uma API REST do zero, aplicando arquitetura limpa, separação de responsabilidades e lógica de CRUD 
 
 ---
 
@@ -20,7 +20,7 @@ Esta API simula um sistema de gerenciamento de produtos, permitindo:
 - Atualizar produto
 - Deletar produto
 
-Os dados são armazenados em memória (array), ou seja, são temporários.
+com dados salvos em banco de dados (postgree)
 
 ---
 
@@ -60,24 +60,6 @@ Durante o desenvolvimento, foram estudados e aplicados os seguintes conceitos:
 - Uso de throw para regras de negócio
 
 ---
-
-# 🏗️ Estrutura do projeto
-
-
-src/
-├── controllers/
-│ └── product.controller.js
-├── routes/
-│ └── product.routes.js
-├── services/
-│ └── product.service.js
-├── middlewares/
-│ ├── logger.js
-│ └── validateProduct.js
-├── utils/
-│ └── AppError.js
-└── server.js
-
 
 
 
